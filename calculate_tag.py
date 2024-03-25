@@ -12,6 +12,6 @@ def calculate_tag(version, latest_tag):
 
 if __name__ == "__main__":
     version = sys.argv[1]
-    latest_tag = sys.argv[2]
+    latest_tag = sys.argv[2] if len(sys.argv) > 2 else None
     new_tag = calculate_tag(version, latest_tag)
     print(new_tag)
