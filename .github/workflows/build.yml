@@ -44,10 +44,18 @@ jobs:
       id: get_version
       run: echo "::set-output name=version::$(awk -F'["]' '/^version[ ]*=/ {print $2}' Cargo.toml)"
 
+    - name: Test Get latest tag
+      id: get_latest_tag_test
+      run: |
+        echo "Without tail"  
+        git tag | sort -g
+        echo "With tail"
+        git tag | sort -g | tail -1
+
     - name: Get latest tag
       id: get_latest_tag
       run: |
-        latest_tag=$(git tag --sort=committerdate | tail -1)
+        latest_tag=$(git tag | sort -g | tail -1)
         echo "::set-output name=latest_tag::${latest_tag}"
 
     - name: Calculate new tag
