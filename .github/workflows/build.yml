@@ -48,9 +48,9 @@ jobs:
       id: get_latest_tag_test
       run: |
         echo "Without tail"  
-        git tag | sort -g
+        test_tag=${git tag | sort -g}
         echo "With tail"
-        git tag | sort -g | tail -1
+        echo ${test_tag}"
 
     - name: Get latest tag
       id: get_latest_tag
