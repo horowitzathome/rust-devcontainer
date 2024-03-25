@@ -33,3 +33,21 @@ jobs:
     - name: Build
       run: |        
         cargo build
+
+    - name: Get version from Cargo.toml
+      id: get_version
+      run: echo "::set-output name=version::$(awk -F'["]' '/^version[ ]*=/ {print $2}' Cargo.toml)"
+
+    - name: Get latest tag
+      id: get_latest_tag
+      run: echo "::set-output name=latest_tag::$(git describe --tags --abbrev=0)"
+
+    - name: Calculate new tag
+      id: calculate_tag
+      run: echo "::set-output name=new_tag::$(python3 calculate_tag.py ${{ steps.get_version.outputs.version }} ${{ steps.get_latest_tag.outputs.latest_tag }})"
+
+    - name: Tag output
+      run: git tag ${{ steps.calculate_tag.outputs.new_tag }}
+
+    - name: Push tag
+      run: git push --tags    
