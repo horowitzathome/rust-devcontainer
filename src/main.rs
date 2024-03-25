@@ -12,7 +12,7 @@ async fn main() -> std::io::Result<()> {
 
     HttpServer::new(|| {
         App::new()
-            // enable logger
+            // enable logger!
             .wrap(middleware::Logger::default())
             .service(web::resource("/").to(say_hello))
     })
