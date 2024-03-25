@@ -47,10 +47,9 @@ jobs:
     - name: Test Get latest tag
       id: get_latest_tag_test
       run: |
-        echo "Without tail"  
-        test_tag=${git tag | sort -g}
-        echo "With tail"
-        echo ${test_tag}"
+        test_tag=$(git tag | sort -g)
+        echo "Without tail"
+        echo "$test_tag" 
 
     - name: Get latest tag
       id: get_latest_tag
