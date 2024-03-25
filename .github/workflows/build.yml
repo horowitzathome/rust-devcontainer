@@ -1,0 +1,27 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      RUST_VERSION: '1.76.0'
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install
+      uses: actions-rs/toolchain@v1
+      with:
+          toolchain: ${{ env.RUST_VERSION }}
+          override: true
+
+    - name: Build
+      run: |        
+        cargo build
