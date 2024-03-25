@@ -46,13 +46,6 @@ jobs:
       id: get_version
       run: echo "::set-output name=version::$(awk -F'["]' '/^version[ ]*=/ {print $2}' Cargo.toml)"
 
-    - name: Test Get latest tag
-      id: get_latest_tag_test
-      run: |
-        test_tag=$(git tag | sort -g | tail -1)
-        echo "Latest tag ..."
-        echo "$test_tag" 
-
     - name: Get latest tag
       id: get_latest_tag
       run: |
@@ -68,3 +61,7 @@ jobs:
 
     - name: Push tag
       run: git push --tags    
+
+    # Build Docker image
+    - name: Build Docker image
+      run: docker build -t horowitzathome/rust-devcontainer:latest .  
