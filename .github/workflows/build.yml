@@ -65,3 +65,11 @@ jobs:
     # Build Docker image
     - name: Build Docker image
       run: docker build -t horowitzathome/rust-devcontainer:latest .  
+
+    # Log in to DockerHub
+    - name: Log in to DockerHub
+      run: docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
+
+    # Push Docker image to DockerHub
+    - name: Push Docker image to DockerHub
+      run: docker push horowitzathome/rust-devcontainer:latest  
