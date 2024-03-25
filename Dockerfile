@@ -11,7 +11,7 @@ WORKDIR /app
 
 # Copy the Rust project files
 COPY Cargo.toml .
-COPY src .
+COPY src /app/src
 
 # Build the Rust program
 RUN cargo build --release --target=x86_64-unknown-linux-musl
