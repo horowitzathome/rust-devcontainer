@@ -15,6 +15,8 @@ jobs:
       RUST_VERSION: '1.76.0'
     steps:
     - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
 
     - name: Cache Cargo dependencies
       uses: actions/cache@v2
@@ -47,8 +49,8 @@ jobs:
     - name: Test Get latest tag
       id: get_latest_tag_test
       run: |
-        test_tag=$(git tag | sort -g)
-        echo "Without tail"
+        test_tag=$(git tag | sort -g | tail -1)
+        echo "Latest tag ..."
         echo "$test_tag" 
 
     - name: Get latest tag
