@@ -34,6 +34,12 @@ jobs:
       run: |        
         cargo build
 
+    - name: Archive compiled program
+      uses: actions/upload-artifact@v2
+      with:
+        name: rust-devcontainer
+        path: ./target/debug/rust-devcontainer
+
     - name: Get version from Cargo.toml
       id: get_version
       run: echo "::set-output name=version::$(awk -F'["]' '/^version[ ]*=/ {print $2}' Cargo.toml)"
