@@ -5,7 +5,7 @@ FROM rust:latest as builder
 
 # Install musl-tools
 RUN apt update
-RUN apt install musl-tools
+RUN apt install -y musl-tools
 
 #Update tool chain
 RUN rustup target add x86_64-unknown-linux-musl
