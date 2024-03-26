@@ -40,6 +40,12 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-cargo-
 
+    - name: Install Docker
+      if: ${{ matrix.target == 'aarch64-apple-darwin' }}
+      run: |
+          sudo apt update
+          sudo apt install -y docker.io        
+
     - name: Install
       uses: actions-rs/toolchain@v1
       with:
