@@ -19,9 +19,9 @@ jobs:
           #- target: aarch64-unknown-linux-gnu
           #  platform: linux/arm64
           #  os: ubuntu-latest
-          - target: aarch64-apple-darwin
+          - target: "aarch64-apple-darwin"
             platform: darwin/arm64
-            os: macos-latest
+            os: "macos-latest"
     
     runs-on: ${{ matrix.os }}
     env:
@@ -41,7 +41,7 @@ jobs:
           ${{ runner.os }}-cargo-
 
     - name: Install Docker
-      if: ${{ matrix.target == 'aarch64-apple-darwin' }}
+      if: ${{ matrix.target == 'aarch64-apple-darwin' && false }}
       run: |
           sudo apt update
           sudo apt install -y docker.io        
