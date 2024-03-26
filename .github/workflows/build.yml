@@ -43,7 +43,7 @@ jobs:
       with:
           toolchain: stable
           target: ${{ matrix.target }}
-          components: clippy, rustfm
+          components: clippy
           override: true
     
     # rustup target add x86_64-unknown-linux-musl      
