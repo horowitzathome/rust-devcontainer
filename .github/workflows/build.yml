@@ -105,8 +105,8 @@ jobs:
         push: ${{ github.event_name != 'pull_request' }}
         context: .
         tags: |
-          user/${{ env.ARTEFACT_NAME }}:latest-${{ matrix.target }}
-          user/${{ env.ARTEFACT_NAME }}:v${{ steps.calculate_tag.outputs.new_tag }}-${{ matrix.target }}
+          horowitzathome/${{ env.ARTEFACT_NAME }}:latest-${{ matrix.target }}
+          horowitzathome/${{ env.ARTEFACT_NAME }}:v${{ steps.calculate_tag.outputs.new_tag }}-${{ matrix.target }}
        
     # Build Docker image
     #- name: Build Docker image
