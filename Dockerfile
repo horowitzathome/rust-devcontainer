@@ -24,13 +24,16 @@ COPY src /app/src
 # Build the Rust program
 RUN cargo build --release --target ${TARGET}
 
+# Copy to a target netral location for next step
+RUN cp /app/target/${TARGET}/release/rust-devcontainer /app/target
+
 # Create a new image with only the compiled binary
 FROM debian:buster-slim
 
 WORKDIR /app
 
 # Copy the binary from the builder image
-COPY --from=builder /app/target/${TARGET}/release/rust-devcontainer .
+COPY --from=builder /app/target/rust-devcontainer .
 
 # Set the entry point
 CMD ["./rust-devcontainer"]
