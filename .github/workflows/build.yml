@@ -131,7 +131,9 @@ jobs:
         tags: |
           horowitzathome/${{ env.ARTEFACT_NAME }}:latest-${{ matrix.target }}
           horowitzathome/${{ env.ARTEFACT_NAME }}:v${{ steps.calculate_tag.outputs.new_tag }}-${{ matrix.target }}
-       
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+
     # Build Docker image
     #- name: Build Docker image
     #  run: docker build -t horowitzathome/rust-devcontainer:latest .  
