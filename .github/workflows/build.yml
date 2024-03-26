@@ -41,7 +41,7 @@ jobs:
     - name: Install
       uses: actions-rs/toolchain@v1
       with:
-          toolchain: ${{ env.RUST_VERSION }}
+          toolchain: stable
           target: ${{ matrix.target }}
           components: clippy, rustfm
           override: true
