@@ -48,9 +48,13 @@ jobs:
           components: clippy
           override: true
 
-    - name: Install musl-tools
+    - name: Installs for x86_64-unknown-linux-musl
       if: ${{ matrix.target == 'x86_64-unknown-linux-musl' }}
-      run: sudo apt update && sudo apt install -y musl-tools      
+      run: sudo apt update && sudo apt install -y musl-tools  
+      
+    - name: Installs for aarch64-unknown-linux-gnu
+      if: ${{ matrix.target == 'aarch64-unknown-linux-gnu' }}
+      run: sudo apt update && sudo apt install -y aarch64-linux-gnu-gcc    
     
     # rustup target add x86_64-unknown-linux-musl      
     - name: Build
