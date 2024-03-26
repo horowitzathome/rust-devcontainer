@@ -69,7 +69,7 @@ jobs:
     - name: Get latest tag
       id: get_latest_tag
       run: |
-        latest_tag=$(git tag | sort -g | tail -1)
+        latest_tag=$(git tag | sort -t '-' -k 2n | tail -1)
         echo "::set-output name=latest_tag::${latest_tag}"
 
     - name: Calculate new tag
