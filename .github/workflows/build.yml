@@ -3,14 +3,26 @@ name: Build
 on:
   push:
     branches:
-      - '**'
-  pull_request:
-    branches:
-      - '**'
+      - main
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          #- target: "x86_64-unknown-linux-gnu"
+          #  platform: linux/amd64
+          #  os: "ubuntu-latest"
+          - target: "x86_64-unknown-linux-musl"
+            platform: linux/amd64
+            os: "ubuntu-latest"
+          # - target: aarch64-unknown-linux-gnu
+          # os: ubuntu-latest
+          #- target: aarch64-apple-darwin
+          #  platform: darwin/arm64
+          #  os: macos-latest
+    
+    runs-on: ${{ matrix.os }}
     env:
       RUST_VERSION: '1.76.0'
     steps:
@@ -34,13 +46,13 @@ jobs:
 
     - name: Build
       run: |        
-        cargo build
+        cargo build --release --target ${{ matrix.target }}
 
     - name: Archive compiled program
       uses: actions/upload-artifact@v2
       with:
-        name: rust-devcontainer
-        path: ./target/debug/rust-devcontainer
+        name: rust-devcontainer-${{ matrix.target }}
+        path: ./target/release/${{ matrix.target }}/rust-devcontainer
 
     - name: Get version from Cargo.toml
       id: get_version
@@ -62,14 +74,26 @@ jobs:
     - name: Push tag
       run: git push --tags    
 
-    # Build Docker image
-    - name: Build Docker image
-      run: docker build -t horowitzathome/rust-devcontainer:latest .  
+     # Build Docker image  
+    - name: Login to Docker Hub container registry
+      uses: docker/login-action@v2.1.0
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-    # Log in to DockerHub
-    - name: Log in to DockerHub
-      run: docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
+    - name: Build and push image to container registry using registry cache
+      uses: docker/build-push-action@v4.0.0
+      with:
+        platforms:  ${{ matrix.platform }}
+        push: ${{ github.event_name != 'pull_request' }}
+        tags: |
+          ${{ inputs.image }}:latest-${{ matrix.target }}
+          ${{ inputs.image }}:v${{ steps.calculate_tag.outputs.new_tag }}-${{ matrix.target }}
+       
+    # Build Docker image
+    #- name: Build Docker image
+    #  run: docker build -t horowitzathome/rust-devcontainer:latest .  
 
     # Push Docker image to DockerHub
-    - name: Push Docker image to DockerHub
-      run: docker push horowitzathome/rust-devcontainer:latest  
+    #- name: Push Docker image to DockerHub
+    #  run: docker push horowitzathome/rust-devcontainer:latest  
