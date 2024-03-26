@@ -48,7 +48,7 @@ jobs:
 
     - name: Install musl-tools
       if: ${{ matrix.target == 'x86_64-unknown-linux-musl' }}
-      run: apt update && sudo apt install -y musl-tools      
+      run: sudo apt update && sudo apt install -y musl-tools      
     
     # rustup target add x86_64-unknown-linux-musl      
     - name: Build
