@@ -25,6 +25,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       RUST_VERSION: '1.76.0'
+      ARTEFACT_NAME: "rust-devcontainer"
     steps:
     - uses: actions/checkout@v4
       with:
@@ -91,11 +92,13 @@ jobs:
     - name: Build and push image to container registry using registry cache
       uses: docker/build-push-action@v4.0.0
       with:
+        build-args: |
+            TARGET=${{ matrix.target }}
         platforms:  ${{ matrix.platform }}
         push: ${{ github.event_name != 'pull_request' }}
         tags: |
-          ${{ inputs.image }}:latest-${{ matrix.target }}
-          ${{ inputs.image }}:v${{ steps.calculate_tag.outputs.new_tag }}-${{ matrix.target }}
+          ${{ env.ARTEFACT_NAME }}:latest-${{ matrix.target }}
+          ${{ env.ARTEFACT_NAME }}:v${{ steps.calculate_tag.outputs.new_tag }}-${{ matrix.target }}
        
     # Build Docker image
     #- name: Build Docker image
