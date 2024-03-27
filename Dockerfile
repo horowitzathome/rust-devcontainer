@@ -7,19 +7,28 @@ FROM rust:latest as builder
 
 ARG TARGET=no-stage-found-builder
 
-ENV THE_TARGET = ${TARGET}
 RUN echo "TARGET is ${TARGET}"
-RUN echo "THE_TARGET is ${THE_TARGET}"
+# ENV THE_TARGET = ${TARGET}
+# RUN echo "THE_TARGET is ${THE_TARGET}"
 
+# STAGE stage-x86_64-unknown-linux-gnu
 FROM builder AS stage-x86_64-unknown-linux-gnu
 
+RUN echo "Stage stage-x86_64-unknown-linux-gnu"
+
+# STAGE stage-x86_64-unknown-linux-musl
 FROM builder AS stage-x86_64-unknown-linux-musl
+
+RUN echo "Stage stage-x86_64-unknown-linux-musl"
 
 RUN apt update && \
     apt install -y musl-tools && \
     rustup target add x86_64-unknown-linux-musl
 
+# STAGE stage-aarch64-unknown-linux-musl
 FROM builder AS stage-aarch64-unknown-linux-musl
+
+RUN echo "Stage stage-aarch64-unknown-linux-musl"
 
 RUN apt update && \
     apt install -y musl-tools && \
@@ -31,7 +40,10 @@ ENV AR_aarch64_unknown_linux_musl=llvm-ar
 ENV CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_RUSTFLAGS="-Clink-self-contained=yes -Clinker=rust-lld"
 ENV CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_RUNNER="qemu-aarch64 -L /usr/aarch64-linux-gnu"
 
+# STAGE final-stage
 FROM  stage-${TARGET} AS final-stage
+
+RUN echo "Stage final-stage"
 
 # Install musl-tools and update toolchain
 #RUN apt update
@@ -75,6 +87,7 @@ RUN cargo build --release --target ${TARGET}
 # Copy to a target netral location for next step
 RUN cp /app/target/${TARGET}/release/rust-devcontainer /app/target
 
+# THE RESULTING CONTAINER IMAGE
 # Create a new image with only the compiled binary
 FROM debian:buster-slim
 
