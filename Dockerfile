@@ -22,13 +22,16 @@ RUN if [ "$TARGET" = "aarch64-unknown-linux-musl" ] ; then \
         apt install -y musl-tools && \
         rustup target add aarch64-unknown-linux-musl && \
         apt-get install clang llvm -y \
+        export CC_aarch64_unknown_linux_musl=clang && \
+        export AR_aarch64_unknown_linux_musl=llvm-ar && \
+        export CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_RUSTFLAGS="-Clink-self-contained=yes -Clinker=rust-lld" && \
+        export CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_RUNNER="qemu-aarch64 -L /usr/aarch64-linux-gnu" \
     ; fi
 
-ENV CC_aarch64_unknown_linux_musl=clang
-ENV AR_aarch64_unknown_linux_musl=llvm-ar
-ENV CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_RUSTFLAGS="-Clink-self-contained=yes -Clinker=rust-lld"
-ENV CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_RUNNER="qemu-aarch64 -L /usr/aarch64-linux-gnu"
-
+#ENV CC_aarch64_unknown_linux_musl=clang
+#ENV AR_aarch64_unknown_linux_musl=llvm-ar
+#ENV CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_RUSTFLAGS="-Clink-self-contained=yes -Clinker=rust-lld"
+#ENV CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_RUNNER="qemu-aarch64 -L /usr/aarch64-linux-gnu"
 
 #Update tool chain
 #RUN rustup target add x86_64-unknown-linux-musl
