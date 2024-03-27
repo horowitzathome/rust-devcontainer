@@ -5,6 +5,10 @@ ARG TARGET=no-stage-found
 # Use a Rust base image
 FROM rust:latest as builder
 
+ENV THE_TARGET = ${TARGET}
+RUN echo "TARGET is ${TARGET}"
+RUN echo "THE_TARGET is ${THE_TARGET}"
+
 FROM builder AS stage-x86_64-unknown-linux-gnu
 
 FROM builder AS stage-x86_64-unknown-linux-musl
@@ -88,7 +92,7 @@ WORKDIR /app
 #    fi    
 
 # Copy the binary from the builder image
-COPY --from=builder /app/target/rust-devcontainer .
+COPY --from=final-stage /app/target/rust-devcontainer .
 
 # Set the entry point
 CMD ["./rust-devcontainer"]
