@@ -7,6 +7,8 @@ async fn say_hello(req: HttpRequest) -> &'static str {
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+    println!("Entered main ....");
+
     std::env::set_var("RUST_LOG", "actix_web=info");
     env_logger::init();
 
@@ -16,7 +18,7 @@ async fn main() -> std::io::Result<()> {
             .wrap(middleware::Logger::default())
             .service(web::resource("/").to(say_hello))
     })
-    .bind("127.0.0.1:8080")?
+    .bind("0.0.0.0:8080")?
     .run()
     .await
 }
