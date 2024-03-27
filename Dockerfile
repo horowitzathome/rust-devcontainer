@@ -44,7 +44,7 @@ WORKDIR /app
 # ARG TARGET
 
 # Try to copy; if source is not valid, copy will (hopefully) not fail
-COPY --from=builder /lib/aarch64-linux-gnu/libgcc_s.so.1 /usr/lib/aarch64-linux-gnu 
+# COPY --from=builder /lib/aarch64-linux-gnu/libgcc_s.so.1 /usr/lib/aarch64-linux-gnu 
 
 #RUN if [ "${TARGET}" = "aarch64-unknown-linux-gnu" ]; then \
 #        COPY --from=builder /lib/aarch64-linux-gnu/libgcc_s.so.6 /usr/lib/aarch64-linux-gnu/; \
