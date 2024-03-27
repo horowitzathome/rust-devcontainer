@@ -5,6 +5,8 @@ ARG TARGET=no-stage-found
 # Use a Rust base image
 FROM rust:latest as builder
 
+ARG TARGET=no-stage-found-builder
+
 ENV THE_TARGET = ${TARGET}
 RUN echo "TARGET is ${TARGET}"
 RUN echo "THE_TARGET is ${THE_TARGET}"
