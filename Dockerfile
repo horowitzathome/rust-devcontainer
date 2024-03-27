@@ -8,12 +8,19 @@ FROM rust:latest as builder
 ARG TARGET  
 
 # Install musl-tools
-RUN apt update
-RUN apt install -y musl-tools
+#RUN apt update
+#RUN apt install -y musl-tools
 
 RUN if [ "$TARGET" = "x86_64-unknown-linux-musl" ] ; then \
         apt update && \
-        apt install -y musl-tools \
+        apt install -y musl-tools && \
+        rustup target add x86_64-unknown-linux-musl \
+    ; fi
+
+RUN if [ "$TARGET" = "aarch64-unknown-linux-musl" ] ; then \
+        apt update && \
+        apt install -y musl-tools && \
+        rustup target add aarch64-unknown-linux-musl \
     ; fi
 
 #Update tool chain
