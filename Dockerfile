@@ -1,11 +1,9 @@
-# Dockerfile
+# Arguments
+# Target, e.g. x86_64-unknown-linux-musl
+ARG TARGET=no-stage-found
 
 # Use a Rust base image
 FROM rust:latest as builder
-
-# Arguments
-# Target, e.g. x86_64-unknown-linux-musl
-ARG TARGET  
 
 FROM builder AS stage-x86_64-unknown-linux-gnu
 

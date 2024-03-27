@@ -1,0 +1,15 @@
+ARG PICK_A_STAGE=default
+
+FROM alpine AS base
+
+FROM base AS stage-one
+ENV HELLO=one
+
+FROM base AS stage-two
+ENV HELLO=two
+
+FROM base AS stage-default
+ENV HELLO=default
+
+FROM stage-${PICK_A_STAGE} AS final-stage
+CMD echo "HELLO is $HELLO"
