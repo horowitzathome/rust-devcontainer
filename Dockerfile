@@ -7,7 +7,7 @@ FROM rust:latest as builder
 # Target, e.g. x86_64-unknown-linux-musl
 ARG TARGET  
 
-# Install musl-tools
+# Install musl-tools and update toolchain
 #RUN apt update
 #RUN apt install -y musl-tools
 
@@ -20,11 +20,12 @@ RUN if [ "$TARGET" = "x86_64-unknown-linux-musl" ] ; then \
 RUN if [ "$TARGET" = "aarch64-unknown-linux-musl" ] ; then \
         apt update && \
         apt install -y musl-tools && \
-        rustup target add aarch64-unknown-linux-musl \
+        rustup target add aarch64-unknown-linux-musl && \
+        apt-get install clang llvm -y \
     ; fi
 
 #Update tool chain
-RUN rustup target add x86_64-unknown-linux-musl
+#RUN rustup target add x86_64-unknown-linux-musl
 
 # Set the working directory
 WORKDIR /app
